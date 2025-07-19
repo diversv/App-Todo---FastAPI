@@ -45,7 +45,7 @@ async def change_password(user:user_dependency,db:db_dependency, user_verificati
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
     if not bcrypt_context.verify(user_verification.password, user_model.new_password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Error on password change")
     user_model.hashed_password = bcrypt_context.encrypt(user_model.new_password)
     db.add(user_model)
     db.commit()
